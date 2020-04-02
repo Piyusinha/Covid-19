@@ -1,0 +1,464 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".homeFragment"
+    android:orientation="vertical"
+    android:weightSum="3"
+   >
+<RelativeLayout
+    android:layout_marginTop="20dp"
+    android:layout_width="wrap_content"
+    android:layout_height="0dp"
+    android:layout_weight=".6"
+    >
+        <androidx.cardview.widget.CardView
+            android:id="@+id/precaution"
+            android:layout_width="match_parent"
+            android:layout_height="130dp"
+            app:cardBackgroundColor="@color/bgcolor"
+            android:layout_marginRight="20dp"
+            android:layout_marginLeft="20dp"
+
+
+            app:cardCornerRadius="20dp"
+            >
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="135dp"
+                    android:layout_marginLeft="-30dp"
+                    android:src="@drawable/ic_girl"></ImageView>
+
+                <LinearLayout
+                   android:layout_width="190dp"
+                   android:layout_height="135dp"
+                    android:layout_gravity="right"
+                    android:orientation="vertical"
+                    android:layout_marginRight="10dp"
+
+                  >
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="20dp"
+                            android:layout_marginRight="10dp"
+                            android:fontFamily="@font/montserrat"
+                            android:text="5 Symtomps of Covid -19"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textSize="25dp"
+                            android:textStyle="bold"></TextView>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Read More"
+                            android:fontFamily="@font/montserrat"
+                            android:textColor="#754537"
+                            android:textStyle=""
+                            ></TextView>
+                </LinearLayout>
+        </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
+       <LinearLayout
+
+           android:layout_width="fill_parent"
+           android:layout_height="0dp"
+           android:layout_weight="1"
+           android:weightSum="2"
+
+           android:layout_marginLeft="20dp"
+           android:layout_marginRight="20dp"
+           android:orientation="horizontal">
+               <LinearLayout
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                       android:layout_weight="1">
+                       <com.ramijemli.percentagechartview.PercentageChartView
+
+                           android:layout_margin="20dp"
+                           app:pcv_backgroundColor="@android:color/white"
+                           android:id="@+id/percentage"
+                           android:layout_width="match_parent"
+                           android:layout_height="match_parent"
+                           app:pcv_textStyle="bold"
+                           app:pcv_textSize="15sp"
+                           app:pcv_mode="ring"
+
+                           app:pcv_backgroundBarColor="@color/bgcolor"
+                           app:pcv_progressBarThickness="5dp"
+                           app:pcv_backgroundBarThickness="20dp"
+                           app:pcv_textColor="@color/colorPrimary"
+                           app:pcv_gradientType="linear"
+                           app:pcv_gradientColors="#18AACF,#4CCCED,#10748E"
+
+                           app:pcv_orientation="clockwise"
+
+                           app:pcv_animDuration="2000"
+                           app:pcv_animInterpolator="linear"
+                           app:pcv_progress="0"
+
+                           app:pcv_startAngle="270"/>
+
+               </LinearLayout>
+               <LinearLayout
+                   android:layout_width="0dp"
+                   android:layout_height="match_parent"
+                   android:layout_weight="1"
+                   android:weightSum="2"
+                   android:orientation="vertical">
+                       <LinearLayout
+                           android:layout_margin="10dp"
+                           android:layout_width="match_parent"
+                           android:layout_height="0dp"
+                           android:orientation="horizontal"
+                           android:weightSum="2"
+                               android:layout_weight="1"
+                           android:background="@drawable/gradientdanger">
+                              <LinearLayout
+                                  android:layout_width="0dp"
+                                  android:layout_height="match_parent"
+                                      android:layout_weight="1"
+                                  android:orientation="vertical"
+                                  >
+                                      <TextView
+                                          android:layout_width="match_parent"
+                                          android:layout_height="wrap_content"
+                                          android:text="Affected"
+                                          android:textStyle="bold"
+                                          android:fontFamily="@font/montserrat"
+                                          android:layout_marginLeft="10dp"
+                                          android:layout_marginTop="5dp"
+                                          android:textColor="@color/dangertext"
+                                              ></TextView>
+                                      <TextView
+                                          android:id="@+id/textaffected"
+                                          android:layout_width="wrap_content"
+                                          android:layout_height="wrap_content"
+                                          android:text="0.00k"
+                                          android:textStyle="bold"
+                                          android:textSize="18dp"
+                                          android:layout_marginLeft="10dp"
+                                          android:textColor="@color/dangertext"
+                                          android:fontFamily="@font/montserrat"
+                                              ></TextView>
+                              </LinearLayout>
+                               <LinearLayout
+                                   android:layout_width="0dp"
+                                   android:layout_height="match_parent"
+                                   android:layout_weight="1"
+                                   android:layout_marginRight="5dp"
+                                   android:layout_marginBottom="5dp"
+                                   android:layout_marginTop="5dp">
+                                   <co.blankkeys.animatedlinegraphview.AnimatedLineGraphView
+                                       android:id="@+id/affectedgraph"
+                                       android:layout_width="match_parent"
+                                       android:layout_height="match_parent"
+                                       app:duration="300"
+                                       app:lineThickness="5"
+                                       app:paddingPercent="0.01"
+                                       app:lineColor="@color/danger"
+                                       />
+                               </LinearLayout>
+
+
+                       </LinearLayout>
+                       <LinearLayout
+                           android:layout_margin="10dp"
+                           android:layout_width="match_parent"
+                           android:layout_height="0dp"
+                           android:layout_weight="1"
+                           android:background="@drawable/gradietactive">
+                               <LinearLayout
+                                   android:layout_width="0dp"
+                                   android:layout_height="match_parent"
+                                   android:layout_weight="1"
+                                   android:orientation="vertical">
+                                       <TextView
+                                           android:layout_width="match_parent"
+                                           android:layout_height="wrap_content"
+                                           android:text="Active"
+                                           android:textStyle="bold"
+                                           android:textColor="@color/colorPrimary"
+                                           android:fontFamily="@font/montserrat"
+                                           android:layout_marginLeft="10dp"
+                                           android:layout_marginTop="5dp"
+                                           ></TextView>
+                                       <TextView
+                                           android:textColor="@color/colorPrimary"
+                                           android:layout_width="wrap_content"
+                                           android:layout_height="wrap_content"
+                                           android:text="0.00k"
+                                           android:textStyle="bold"
+                                           android:textSize="18dp"
+                                           android:layout_marginLeft="10dp"
+                                           android:fontFamily="@font/montserrat"
+                                           android:id="@+id/textactive"
+                                           ></TextView>
+                               </LinearLayout>
+                               <LinearLayout
+                                   android:layout_width="0dp"
+                                   android:layout_height="match_parent"
+                                   android:layout_weight="1"
+                                   android:layout_marginRight="5dp"
+                                   android:layout_marginBottom="5dp"
+                                   android:layout_marginTop="5dp">
+                                       <co.blankkeys.animatedlinegraphview.AnimatedLineGraphView
+                                           android:outlineAmbientShadowColor="@color/danger"
+                                           android:id="@+id/activegraph"
+                                           android:layout_width="match_parent"
+                                           android:layout_height="match_parent"
+                                           app:duration="300"
+                                           app:lineThickness="5"
+                                           app:paddingPercent="0.01"
+                                           app:lineColor="@color/colorPrimary"
+                                           />
+                               </LinearLayout>
+                       </LinearLayout>
+
+
+               </LinearLayout>
+
+       </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+                android:layout_weight="1"
+            android:orientation="vertical">
+                <androidx.coordinatorlayout.widget.CoordinatorLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp">
+                        <TextView
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginLeft="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="left|center"
+                            android:text="Top 3 Country"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/montserrat"
+                            android:textSize="18sp"></TextView>
+                        <TextView
+                            android:textColor="@color/colorPrimary"
+                            android:layout_marginRight="20dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="right|center"
+                            android:text="View All"
+                            android:textStyle="bold"
+                            android:fontFamily="@font/montserrat"
+                            android:textSize="15sp"></TextView>
+                </androidx.coordinatorlayout.widget.CoordinatorLayout>
+                <HorizontalScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_margin="5dp"
+                    android:scrollbars="none"
+                    >
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:orientation="horizontal"
+
+                            >
+                          <androidx.cardview.widget.CardView
+                              android:layout_width="160dp"
+                              android:layout_height="match_parent"
+                              app:cardCornerRadius="10dp"
+                              android:layout_marginRight="20dp"
+                              android:layout_marginBottom="2dp"
+
+
+                              ><LinearLayout
+                              android:layout_width="match_parent"
+                              android:layout_height="match_parent"
+                              android:background="@drawable/gradfirstcountry"
+                              android:weightSum="2"
+                              android:orientation="vertical">
+                                <LinearLayout
+                                    android:layout_width="match_parent"
+                                    android:layout_height="0dp"
+                                    android:layout_weight="1"
+                                    android:orientation="vertical">
+                                  <TextView
+                                      android:id="@+id/textfcon"
+                                      android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:text="USA"
+                                      android:textColor="@android:color/white"
+                                      android:fontFamily="@font/montserrat"
+                                      android:layout_gravity="center"
+                                      android:layout_marginTop="15dp"
+                                      android:textSize="15sp"
+                                      android:textStyle="bold"
+                                      ></TextView>
+                                  <TextView
+                                      android:id="@+id/textfconcases"
+                                      android:layout_width="wrap_content"
+                                      android:layout_height="wrap_content"
+                                      android:text="200,256"
+                                      android:textColor="@android:color/white"
+                                      android:fontFamily="@font/montserrat"
+                                      android:layout_gravity="center"
+
+                                      android:textSize="20sp"
+                                      android:textStyle="bold"
+                                      ></TextView>
+                                </LinearLayout>
+                                  <LinearLayout
+                                      android:layout_width="match_parent"
+                                      android:layout_height="0dp"
+                                      android:layout_weight="1"
+                                      android:orientation="vertical">
+                                          <co.blankkeys.animatedlinegraphview.AnimatedLineGraphView
+                                              android:id="@+id/graphfirstcountry"
+                                              android:layout_width="match_parent"
+                                              android:layout_height="match_parent"
+                                              app:duration="300"
+                                              app:lineThickness="5"
+                                              app:paddingPercent="0.01"
+                                              app:lineColor="@android:color/white"
+                                              />
+
+                                  </LinearLayout>
+
+
+
+                          </LinearLayout></androidx.cardview.widget.CardView>
+                                <androidx.cardview.widget.CardView
+
+                                    android:layout_width="160dp"
+                                    android:layout_height="match_parent"
+                                    app:cardCornerRadius="10dp"
+                                    android:layout_marginRight="20dp"
+                                    android:layout_marginBottom="2dp"
+                                    ><LinearLayout
+                                    android:orientation="vertical"
+                                    android:weightSum="2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/gradsecondcountry">
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+                                                <TextView
+                                                    android:id="@+id/textscon"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="ITALY"
+                                                    android:textColor="@android:color/white"
+                                                    android:fontFamily="@font/montserrat"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginTop="15dp"
+                                                    android:textSize="15sp"
+                                                    android:textStyle="bold"
+                                                    ></TextView>
+                                                <TextView
+                                                    android:id="@+id/textsconcases"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="2200,256"
+                                                    android:textColor="@android:color/white"
+                                                    android:fontFamily="@font/montserrat"
+                                                    android:layout_gravity="center"
+
+                                                    android:textSize="20sp"
+                                                    android:textStyle="bold"
+                                                    ></TextView>
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+                                                <co.blankkeys.animatedlinegraphview.AnimatedLineGraphView
+                                                    android:id="@+id/graphsecondcountry"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    app:duration="300"
+                                                    app:lineThickness="5"
+                                                    app:paddingPercent="0.01"
+                                                    app:lineColor="@android:color/white"
+                                                    />
+
+                                        </LinearLayout>
+
+                                </LinearLayout></androidx.cardview.widget.CardView>
+                                <androidx.cardview.widget.CardView
+                                    android:layout_width="160dp"
+                                    android:layout_height="match_parent"
+                                    app:cardCornerRadius="10dp"
+                                    android:layout_marginRight="20dp"
+                                    android:layout_marginBottom="2dp"
+                                    ><LinearLayout
+                                    android:orientation="vertical"
+                                    android:weightSum="2"
+                                    android:layout_width="match_parent"
+                                    android:layout_height="match_parent"
+                                    android:background="@drawable/gradthirfcountry">
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+                                                <TextView
+                                                    android:id="@+id/texttcon"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="China"
+                                                    android:textColor="@android:color/white"
+                                                    android:fontFamily="@font/montserrat"
+                                                    android:layout_gravity="center"
+                                                    android:layout_marginTop="15dp"
+                                                    android:textSize="15sp"
+                                                    android:textStyle="bold"
+                                                    ></TextView>
+                                                <TextView
+                                                    android:id="@+id/texttconcases"
+                                                    android:layout_width="wrap_content"
+                                                    android:layout_height="wrap_content"
+                                                    android:text="2020,256"
+                                                    android:textColor="@android:color/white"
+                                                    android:fontFamily="@font/montserrat"
+                                                    android:layout_gravity="center"
+
+                                                    android:textSize="20sp"
+                                                    android:textStyle="bold"
+                                                    ></TextView>
+                                        </LinearLayout>
+
+                                        <LinearLayout
+                                            android:layout_width="match_parent"
+                                            android:layout_height="0dp"
+                                            android:layout_weight="1"
+                                            android:orientation="vertical">
+                                                <co.blankkeys.animatedlinegraphview.AnimatedLineGraphView
+                                                    android:id="@+id/graphthirdcountry"
+                                                    android:layout_width="match_parent"
+                                                    android:layout_height="match_parent"
+                                                    app:duration="300"
+                                                    app:lineThickness="5"
+                                                    app:paddingPercent="0.01"
+                                                    app:lineColor="@android:color/white"
+                                                    />
+
+                                        </LinearLayout>
+                                </LinearLayout></androidx.cardview.widget.CardView>
+                        </LinearLayout>
+
+
+                </HorizontalScrollView>
+                
+        </LinearLayout>
+
+
+
+
+
+</LinearLayout>

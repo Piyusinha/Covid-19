@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#18AACF</color>
+    <color name="colorPrimaryDark">#10748E</color>
+    <color name="colorAccent">#4CCCED</color>
+    <color name="bgcolor">#ecf4f3</color>
+    <color name="bgcolorbn">#D3E8E5</color>
+    <color name="danger">#FC7676</color>
+    <color name="gradientdanger">#F8EBEB</color>
+    <color name="dangertext">#794B4B</color>
+
+</resources>
