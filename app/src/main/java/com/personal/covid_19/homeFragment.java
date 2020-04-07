@@ -1,5 +1,7 @@
 package com.personal.covid_19;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -43,17 +45,22 @@ import org.json.JSONObject;
  * A simple {@link Fragment} subclass.
  */
 public class homeFragment extends Fragment {
-    AnimatedLineGraphView affectedGraphView,activegraphview;
+    AnimatedLineGraphView affectedGraphView,activegraphview,graphfcon,graphscon,graphtcon;
     TextView affected,active,fconame,factive,sconame,sactive,tconame,tactive;
     PercentageChartView percentageChartView;
     JSONObject jsonValuecases,jsonValuedeath
             ,jsonValuerecover= null;
+    TextView readmore;
+
     List<String> casesdata = new ArrayList<>();
     List<String> deathdata = new ArrayList<>();
     List<String> recoverdata = new ArrayList<>();
     String cars[];
     List<String> topthreecon=new ArrayList<>();
-    List<countrydailydata> countrydatadaily;
+    List<countrydailydata> countrydatadaily1=null;
+    List<countrydailydata> countrydatadaily2=null;
+    List<countrydailydata> countrydatadaily3=null;
+
     ObjectMapper objectMapper = new ObjectMapper();
 
     private static String TAG="Check";
@@ -70,6 +77,9 @@ public class homeFragment extends Fragment {
         ViewGroup root=(ViewGroup)inflater.inflate(R.layout.fragment_home, container, false);
         affectedGraphView=root.findViewById(R.id.affectedgraph);
         activegraphview=root.findViewById(R.id.activegraph);
+        graphfcon=root.findViewById(R.id.graphfirstcountry);
+        graphscon=root.findViewById(R.id.graphsecondcountry);
+        graphtcon=root.findViewById(R.id.graphthirdcountry);
         affected=root.findViewById(R.id.textaffected);
         active=root.findViewById(R.id.textactive);
         fconame=root.findViewById(R.id.textfcon);
@@ -79,6 +89,14 @@ public class homeFragment extends Fragment {
         tconame=root.findViewById(R.id.texttcon);
         tactive=root.findViewById(R.id.texttconcases);
         percentageChartView=root.findViewById(R.id.percentage);
+        readmore=root.findViewById(R.id.readmore);
+        readmore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://www.worldometers.info/coronavirus/coronavirus-symptoms/"));
+                startActivity(browserIntent);
+            }
+        });
 
         utils apiinterface=RetrofitClient.getClient(getContext()).create(utils.class);
         apiinterface.allcases().subscribeOn(Schedulers.io())
@@ -121,15 +139,15 @@ public class homeFragment extends Fragment {
                @Override
                public void onNext(List<countrydata> countrydata) {
                    Log.d(TAG, "onNext: "+countrydata.get(0).getCountry());
-                   fconame.setText(countrydata.get(0).getCountry());
-                   factive.setText(Float.toString(countrydata.get(0).getActive()));
-                   sconame.setText(countrydata.get(1).getCountry());
-                   sactive.setText(Float.toString(countrydata.get(1).getActive()));
-                   tconame.setText(countrydata.get(2).getCountry());
-                   tactive.setText(Float.toString(countrydata.get(2).getActive()));
-                   topthreecon.add(countrydata.get(0).getCountry());
+                   fconame.setText(countrydata.get(1).getCountry());
+                   factive.setText(Float.toString(countrydata.get(1).getCases()));
+                   sconame.setText(countrydata.get(2).getCountry());
+                   sactive.setText(Float.toString(countrydata.get(2).getCases()));
+                   tconame.setText(countrydata.get(3).getCountry());
+                   tactive.setText(Float.toString(countrydata.get(3).getCases()));
                    topthreecon.add(countrydata.get(1).getCountry());
                    topthreecon.add(countrydata.get(2).getCountry());
+                   topthreecon.add(countrydata.get(3).getCountry());
 
                }
 
@@ -196,11 +214,11 @@ public class homeFragment extends Fragment {
             affectedGraphView.setData(null);// for example
             affectedGraphView.setData(casedata);
             float activecasep[]=new float[]{
-                    Float.valueOf(casesdata.get(size-1))-Float.valueOf(deathdata.get(size-1))-Float.valueOf(recoverdata.get(size-1)),Float.valueOf(casesdata.get(size-2))-Float.valueOf(deathdata.get(size-2))-Float.valueOf(recoverdata.get(size-2)),Float.valueOf(casesdata.get(size-3))-Float.valueOf(deathdata.get(size-3))-Float.valueOf(recoverdata.get(size-3)),Float.valueOf(casesdata.get(size-4))-Float.valueOf(deathdata.get(size-4))-Float.valueOf(recoverdata.get(size-4)),
+                    Float.valueOf(casesdata.get(size-1))-Float.valueOf(deathdata.get(size-1))-Float.valueOf(recoverdata.get(size-1)),Float.valueOf(casesdata.get(size-2))-Float.valueOf(deathdata.get(size-2))-Float.valueOf(recoverdata.get(size-2)),
+                    Float.valueOf(casesdata.get(size-3))-Float.valueOf(deathdata.get(size-3))-Float.valueOf(recoverdata.get(size-3)),Float.valueOf(casesdata.get(size-4))-Float.valueOf(deathdata.get(size-4))-Float.valueOf(recoverdata.get(size-4)),
                     Float.valueOf(casesdata.get(size-5))-Float.valueOf(recoverdata.get(size-5))-Float.valueOf(deathdata.get(size-5)),Float.valueOf(casesdata.get(size-6))-Float.valueOf(deathdata.get(size-6))-Float.valueOf(recoverdata.get(size-6)),
                     Float.valueOf(casesdata.get(size-7))-Float.valueOf(deathdata.get(size-7))-Float.valueOf(recoverdata.get(size-7)),Float.valueOf(casesdata.get(size-8))-Float.valueOf(deathdata.get(size-8))-Float.valueOf(recoverdata.get(size-8)),
-                    Float.valueOf(casesdata.get(size-9))-Float.valueOf(deathdata.get(size-9))-Float.valueOf(recoverdata.get(size-9))
-                    ,Float.valueOf(casesdata.get(size-10))-Float.valueOf(deathdata.get(size-10))-Float.valueOf(recoverdata.get(size-10))};
+                    Float.valueOf(casesdata.get(size-9))-Float.valueOf(deathdata.get(size-9))-Float.valueOf(recoverdata.get(size-9)),Float.valueOf(casesdata.get(size-10))-Float.valueOf(deathdata.get(size-10))-Float.valueOf(recoverdata.get(size-10))};
 
             activegraphview.setData(null);
             activegraphview.setData(activecasep);
@@ -256,11 +274,22 @@ public class homeFragment extends Fragment {
                 JSONObject array1 = new JSONObject(response.body().string());
 
                 if (array1.length() > 0) {
+                    JSONArray country1 = null;
+                if(topthreecon.get(0).equals("USA")) {
+                   country1 = array1.getJSONArray(topthreecon.get(0).substring(0,2));
+                }
+                else
+                {
+                    country1 = array1.getJSONArray(topthreecon.get(0));
+                }
 
-                   JSONArray check=array1.getJSONArray(topthreecon.get(0).substring(0,2));
+                   JSONArray country2=array1.getJSONArray(topthreecon.get(1));
+                   JSONArray country3=array1.getJSONArray(topthreecon.get(2));
 
-                    countrydatadaily=objectMapper.readValue(String.valueOf(check),objectMapper.getTypeFactory().constructCollectionType(List.class, countrydailydata.class));
-                    Log.d(TAG, "doInBackground: "+countrydatadaily.get(countrydatadaily.size()-1).getConfirmed());
+                    countrydatadaily1=objectMapper.readValue(String.valueOf(country1),objectMapper.getTypeFactory().constructCollectionType(List.class, countrydailydata.class));
+                    countrydatadaily2=objectMapper.readValue(String.valueOf(country2),objectMapper.getTypeFactory().constructCollectionType(List.class, countrydailydata.class));
+                    countrydatadaily3=objectMapper.readValue(String.valueOf(country3),objectMapper.getTypeFactory().constructCollectionType(List.class, countrydailydata.class));
+
 
 
 
@@ -273,6 +302,40 @@ public class homeFragment extends Fragment {
 
 
             return null;
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            super.onPostExecute(s);
+
+            int size=countrydatadaily1.size();
+            float country1data[]=new float[]{countrydatadaily1.get(size-1).getConfirmed(),countrydatadaily1.get(size-2).getConfirmed(),
+                    countrydatadaily1.get(size-3).getConfirmed(),countrydatadaily1.get(size-4).getConfirmed(),
+                    countrydatadaily1.get(size-5).getConfirmed(),countrydatadaily1.get(size-6).getConfirmed(),
+                    countrydatadaily1.get(size-7).getConfirmed(),countrydatadaily1.get(size-8).getConfirmed(),
+                    countrydatadaily1.get(size-9).getConfirmed(),countrydatadaily1.get(size-10).getConfirmed()};
+            float country2data[]=new float[]{countrydatadaily2.get(size-1).getConfirmed(),countrydatadaily2.get(size-2).getConfirmed(),
+                    countrydatadaily2.get(size-3).getConfirmed(),countrydatadaily2.get(size-4).getConfirmed(),
+                    countrydatadaily2.get(size-5).getConfirmed(),countrydatadaily2.get(size-6).getConfirmed(),
+                    countrydatadaily2.get(size-7).getConfirmed(),countrydatadaily2.get(size-8).getConfirmed(),
+                    countrydatadaily2.get(size-9).getConfirmed(),countrydatadaily2.get(size-10).getConfirmed()};
+            float country3data[]=new float[]{countrydatadaily3.get(size-1).getConfirmed(),countrydatadaily3.get(size-2).getConfirmed(),
+                    countrydatadaily3.get(size-3).getConfirmed(),countrydatadaily3.get(size-4).getConfirmed(),
+                    countrydatadaily3.get(size-5).getConfirmed(),countrydatadaily3.get(size-6).getConfirmed(),
+                    countrydatadaily3.get(size-7).getConfirmed(),countrydatadaily3.get(size-8).getConfirmed(),
+                    countrydatadaily3.get(size-9).getConfirmed(),countrydatadaily3.get(size-10).getConfirmed()};
+
+            graphfcon.setData(null);
+            graphscon.setData(null);
+            graphtcon.setData(null);
+
+            graphfcon.setData(country1data);
+
+            graphscon.setData(country2data);
+            graphtcon.setData(country3data);
+
+
+
         }
     }
 }

@@ -29,11 +29,8 @@ public class MainActivity extends AppCompatActivity {
                         getSupportFragmentManager().
                                 beginTransaction().replace(R.id.framecontent,new homeFragment()).commit();
                         break;
+
                     case 1:
-                        getSupportFragmentManager().
-                                beginTransaction().replace(R.id.framecontent,new precautions()).commit();
-                        break;
-                    case 3:
                         getSupportFragmentManager().
                                 beginTransaction().replace(R.id.framecontent,new news()).commit();
                         break;

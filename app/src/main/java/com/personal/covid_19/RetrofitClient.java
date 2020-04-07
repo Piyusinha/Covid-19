@@ -4,12 +4,15 @@ import android.content.Context;
 
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import java.util.Collections;
+
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
 
     private static Retrofit retrofit = null;
+    private static  Retrofit newsretrofit=null;
 
 
     public static Retrofit getClient(Context context) {
@@ -21,6 +24,17 @@ public class RetrofitClient {
                     .build();
         }
         return retrofit;
+    }
+    public static Retrofit getnewsretrofit(Context context)
+    {
+        if (newsretrofit == null) {
+            newsretrofit = new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .baseUrl("https://newsapi.org/v2/")
+                    .build();
+        }
+        return newsretrofit;
     }
 
 }

@@ -3,12 +3,71 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:orientation="vertical"
     tools:context=".news">
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent">
+      <ProgressBar
+          android:id="@+id/newsprogress"
+          android:layout_width="60dp"
+          android:layout_height="60dp"
+          android:layout_gravity="center_horizontal|center_vertical"></ProgressBar>
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
+        android:background="@color/colorPrimary"
+
+        >
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Top Covid-19 News"
+            android:textColor="@android:color/white"
+            android:textSize="25sp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="20dp"
+            android:fontFamily="@font/montserrat"
+            android:textStyle="bold">
+
+        </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_marginTop="-100dp"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:text="@string/hello_blank_fragment" />
+        android:background="@drawable/newslayoutback"
+
+
+        >
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            >
+            <androidx.recyclerview.widget.RecyclerView
+
+                android:id="@+id/newslist"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp">
+
+
+            </androidx.recyclerview.widget.RecyclerView>
+
+
+
+        </ScrollView>
+
+    </LinearLayout>
+</LinearLayout>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </FrameLayout>

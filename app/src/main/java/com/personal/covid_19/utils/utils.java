@@ -13,6 +13,8 @@ public interface utils {
     Observable<allcases> allcases();
     @GET("countries?sort=cases")
     Observable<List<countrydata>> allcountrydata();
+    @GET("top-headlines?language=en&q=corona&apiKey=d658411b9a6c41d4b52e9ffe93b46d11")
+    Observable<newsresponse> newsresponse();
 
 
 
