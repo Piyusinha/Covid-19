@@ -41,12 +41,23 @@ public class newadapter extends RecyclerView.Adapter<newadapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         newsallcn newsallcn= newsitems.get(position);
-        holder.title.setText(newsallcn.getTitle().substring(0,50)+".");
+        if(newsallcn.getTitle().length()>50) {
+            holder.title.setText(newsallcn.getTitle().substring(0, 50) + ".");
+        }
+        else {
+            holder.title.setText(newsallcn.getTitle()+ ".");
+        }
         holder.author.setText(newsallcn.getAuthor());
         holder.news.setText(newsallcn.getDescription());
-        Picasso.with(context)
-                .load(newsallcn.getUrlToImage())
-                .into(holder.newsimage);
+        if(newsallcn.getUrlToImage().length()==0)
+        {
+            holder.newsimage.setImageResource(R.drawable.girl);
+        }
+        else {
+            Picasso.with(context)
+                    .load(newsallcn.getUrlToImage())
+                    .into(holder.newsimage);
+        }
         holder.cardView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

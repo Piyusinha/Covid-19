@@ -35,6 +35,7 @@
 
             </LinearLayout>
             <LinearLayout
+                android:layout_marginTop="10dp"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:layout_weight="1.25"
@@ -46,7 +47,7 @@
                     android:text="Google Doodle offers coronavirus tips."
                     android:fontFamily="@font/montserrat"
                     android:textColor="@color/colorPrimaryDark"
-                    android:textSize="20sp"></TextView>
+                    android:textSize="18sp"></TextView>
                 <TextView
                     android:id="@+id/newsauthor"
                     android:layout_marginTop="10dp"

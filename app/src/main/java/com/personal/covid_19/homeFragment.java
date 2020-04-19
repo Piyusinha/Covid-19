@@ -3,8 +3,10 @@ package com.personal.covid_19;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 
 import android.util.Log;
@@ -16,8 +18,11 @@ import android.widget.TextView;
 import java.io.IOException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 import co.blankkeys.animatedlinegraphview.AnimatedLineGraphView;
 import io.reactivex.Observer;
@@ -33,6 +38,7 @@ import com.google.gson.JsonArray;
 import com.personal.covid_19.model.allcases;
 import com.personal.covid_19.model.countrydailydata;
 import com.personal.covid_19.model.countrydata;
+import com.personal.covid_19.model.india_Data;
 import  com.personal.covid_19.utils.*;
 import com.ramijemli.percentagechartview.PercentageChartView;
 
@@ -62,6 +68,13 @@ public class homeFragment extends Fragment {
     List<countrydailydata> countrydatadaily3=null;
 
     ObjectMapper objectMapper = new ObjectMapper();
+    HashMap<Integer, String> statecases=new HashMap<>();
+    LinkedHashMap<Integer, String> sortedCASES = new LinkedHashMap<>();
+    List<String> top3states=new ArrayList<>();
+    List<Integer> top3statecases=new ArrayList<>();
+
+
+
 
     private static String TAG="Check";
 
@@ -97,8 +110,53 @@ public class homeFragment extends Fragment {
                 startActivity(browserIntent);
             }
         });
+        utils apiinterfaceindia=RetrofitClient.getindiaretrofit(getContext()).create(utils.class);
+        apiinterfaceindia.allindiadata().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<india_Data>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-        utils apiinterface=RetrofitClient.getClient(getContext()).create(utils.class);
+                    }
+
+                    @RequiresApi(api = Build.VERSION_CODES.N)
+                    @Override
+                    public void onNext(india_Data india_data) {
+                        Log.d("HIEE", "onNext: "+india_data.getCases_time_series().toString());
+                        for(int days=1;days<india_data.getStatewise().size();days++)
+                        {
+                            statecases.put(Integer.valueOf(india_data.getStatewise().get(days).getActive()),india_data.getStatewise().get(days).getState());
+                        }
+                        statecases.entrySet()
+                                .stream()
+                                .sorted(HashMap.Entry.comparingByKey())
+                                .forEachOrdered(x -> sortedCASES.put(x.getKey(), x.getValue()));
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.e("hiee error", "onError: "+e.getLocalizedMessage() );
+                    }
+
+                    @Override
+                    public void onComplete() {
+                        List<Integer> l=new ArrayList<>(sortedCASES.keySet());
+                        Log.d(TAG, "onComplete: "+l.size());
+                        top3states.add(sortedCASES.get(l.get(l.size()-1)));
+                        top3states.add(sortedCASES.get(l.get(l.size()-2)));
+                        top3states.add(sortedCASES.get(l.get(l.size()-3)));
+                        top3statecases.add(l.get(l.size()-1));
+                        top3statecases.add(l.get(l.size()-2));
+                        top3statecases.add(l.get(l.size()-3));
+
+                        Log.d(TAG, "onComplete: "+top3states.get(0));
+                        Log.d(TAG, "onComplete: "+top3statecases.get(0));
+
+
+
+                    }
+                });
+     utils apiinterface=RetrofitClient.getClient(getContext()).create(utils.class);
         apiinterface.allcases().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<allcases>() {

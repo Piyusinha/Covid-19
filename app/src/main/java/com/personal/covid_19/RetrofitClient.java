@@ -13,6 +13,8 @@ public class RetrofitClient {
 
     private static Retrofit retrofit = null;
     private static  Retrofit newsretrofit=null;
+    private static  Retrofit indiaretrofit=null;
+
 
 
     public static Retrofit getClient(Context context) {
@@ -20,7 +22,7 @@ public class RetrofitClient {
             retrofit = new Retrofit.Builder()
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
-                    .baseUrl("https://corona.lmao.ninja/")
+                    .baseUrl("https://corona.lmao.ninja/v2/")
                     .build();
         }
         return retrofit;
@@ -35,6 +37,18 @@ public class RetrofitClient {
                     .build();
         }
         return newsretrofit;
+    }
+    public static Retrofit getindiaretrofit(Context context)
+    {
+
+        if (indiaretrofit == null) {
+            indiaretrofit = new Retrofit.Builder()
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                    .baseUrl("https://api.covid19india.org/")
+                    .build();
+        }
+        return indiaretrofit;
     }
 
 }
