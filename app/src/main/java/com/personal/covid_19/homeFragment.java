@@ -1,6 +1,7 @@
 package com.personal.covid_19;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -8,11 +9,13 @@ import android.os.Bundle;
 
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.io.IOException;
@@ -46,6 +49,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import static android.content.Context.MODE_PRIVATE;
+
 
 /**
  * A simple {@link Fragment} subclass.
@@ -72,6 +77,10 @@ public class homeFragment extends Fragment {
     LinkedHashMap<Integer, String> sortedCASES = new LinkedHashMap<>();
     List<String> top3states=new ArrayList<>();
     List<Integer> top3statecases=new ArrayList<>();
+    ImageView indian;
+    Boolean indianbutton=false;
+
+
 
 
 
@@ -87,7 +96,9 @@ public class homeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         ViewGroup root=(ViewGroup)inflater.inflate(R.layout.fragment_home, container, false);
+        indian=root.findViewById(R.id.ind);
         affectedGraphView=root.findViewById(R.id.affectedgraph);
         activegraphview=root.findViewById(R.id.activegraph);
         graphfcon=root.findViewById(R.id.graphfirstcountry);
@@ -103,6 +114,25 @@ public class homeFragment extends Fragment {
         tactive=root.findViewById(R.id.texttconcases);
         percentageChartView=root.findViewById(R.id.percentage);
         readmore=root.findViewById(R.id.readmore);
+        SharedPreferences pref = getActivity().getApplicationContext().getSharedPreferences("mode", MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+
+        indian.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(pref.getBoolean("india",false))
+                {   editor.putBoolean("india",false);
+                    Log.d(TAG, "onClick: "+pref.getBoolean("india",false));
+
+                }
+                else if(!pref.getBoolean("india",false)){
+                    editor.putBoolean("india",true);
+
+                }
+                FragmentTransaction ft = getFragmentManager().beginTransaction();
+                ft.detach(homeFragment.this).attach(homeFragment.this).commit();
+            }
+        });
         readmore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -110,6 +140,20 @@ public class homeFragment extends Fragment {
                 startActivity(browserIntent);
             }
         });
+
+    if(!pref.getBoolean("india",false)) {
+        globalcases();
+    }
+    else if(pref.getBoolean("india",false))
+    {
+        indiancases();
+    }
+
+        // Inflate the layout for this fragment
+        return root;
+    }
+
+    private void indiancases() {
         utils apiinterfaceindia=RetrofitClient.getindiaretrofit(getContext()).create(utils.class);
         apiinterfaceindia.allindiadata().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
@@ -122,6 +166,9 @@ public class homeFragment extends Fragment {
                     @RequiresApi(api = Build.VERSION_CODES.N)
                     @Override
                     public void onNext(india_Data india_data) {
+                        DecimalFormat precision = new DecimalFormat("0.0");
+                        affected.setText(Float.toString(Float.parseFloat(precision.format(india_data.getStatewise().get(0).getConfirmed()))/1000)+"k");
+                        affected.setText(Float.toString(Float.parseFloat(precision.format(india_data.getStatewise().get(0).getActive()))/1000)+"k");
                         Log.d("HIEE", "onNext: "+india_data.getCases_time_series().toString());
                         for(int days=1;days<india_data.getStatewise().size();days++)
                         {
@@ -154,9 +201,13 @@ public class homeFragment extends Fragment {
 
 
 
+
                     }
                 });
-     utils apiinterface=RetrofitClient.getClient(getContext()).create(utils.class);
+    }
+
+    private void globalcases() {
+        utils apiinterface=RetrofitClient.getClient(getContext()).create(utils.class);
         apiinterface.allcases().subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Observer<allcases>() {
@@ -185,47 +236,43 @@ public class homeFragment extends Fragment {
 
                     }
                 });
-            new fetchdailydata().execute();
-           apiinterface.allcountrydata().subscribeOn(Schedulers.io())
-           .observeOn(AndroidSchedulers.mainThread())
-           .subscribe(new Observer<List<countrydata>>() {
-               @Override
-               public void onSubscribe(Disposable d) {
+        new fetchdailydata().execute();
+        apiinterface.allcountrydata().subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Observer<List<countrydata>>() {
+                    @Override
+                    public void onSubscribe(Disposable d) {
 
-               }
+                    }
 
-               @Override
-               public void onNext(List<countrydata> countrydata) {
-                   Log.d(TAG, "onNext: "+countrydata.get(0).getCountry());
-                   fconame.setText(countrydata.get(1).getCountry());
-                   factive.setText(Float.toString(countrydata.get(1).getCases()));
-                   sconame.setText(countrydata.get(2).getCountry());
-                   sactive.setText(Float.toString(countrydata.get(2).getCases()));
-                   tconame.setText(countrydata.get(3).getCountry());
-                   tactive.setText(Float.toString(countrydata.get(3).getCases()));
-                   topthreecon.add(countrydata.get(1).getCountry());
-                   topthreecon.add(countrydata.get(2).getCountry());
-                   topthreecon.add(countrydata.get(3).getCountry());
+                    @Override
+                    public void onNext(List<countrydata> countrydata) {
+                        Log.d(TAG, "onNext: "+countrydata.get(0).getCountry());
+                        fconame.setText(countrydata.get(1).getCountry());
+                        factive.setText(Float.toString(countrydata.get(1).getCases()));
+                        sconame.setText(countrydata.get(2).getCountry());
+                        sactive.setText(Float.toString(countrydata.get(2).getCases()));
+                        tconame.setText(countrydata.get(3).getCountry());
+                        tactive.setText(Float.toString(countrydata.get(3).getCases()));
+                        topthreecon.add(countrydata.get(1).getCountry());
+                        topthreecon.add(countrydata.get(2).getCountry());
+                        topthreecon.add(countrydata.get(3).getCountry());
 
-               }
+                    }
 
-               @Override
-               public void onError(Throwable e) {
-                   Log.d(TAG, "onError: "+e.getLocalizedMessage());
-               }
+                    @Override
+                    public void onError(Throwable e) {
+                        Log.d(TAG, "onError: "+e.getLocalizedMessage());
+                    }
 
-               @Override
-               public void onComplete() {
-                   new topcondailydata().execute();
+                    @Override
+                    public void onComplete() {
+                        new topcondailydata().execute();
 
-               }
-           })  ;
-
-
-
-        // Inflate the layout for this fragment
-        return root;
+                    }
+                })  ;
     }
+
     private class fetchdailydata extends AsyncTask<String,Void,String>
     {
 
