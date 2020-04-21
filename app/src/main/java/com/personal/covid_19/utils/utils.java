@@ -15,8 +15,8 @@ public interface utils {
     Observable<List<countrydata>> allcountrydata();
     @GET("top-headlines?language=en&q=corona&apiKey=d658411b9a6c41d4b52e9ffe93b46d11&pagesize=100")
     Observable<newsresponse> newsresponse();
-    @GET("top-headlines?q=corona&apiKey=d658411b9a6c41d4b52e9ffe93b46d11")
-    Observable<newsresponse> indiannewsresoinse();
+    @GET("top-headlines?country=in&q=corona&apiKey=1a54f1fa7c7741d28b862ba1a32875ef")
+    Observable<newsresponse> indiannewsresponse();
     @GET("data.json")
     Observable<india_Data> allindiadata();
 
