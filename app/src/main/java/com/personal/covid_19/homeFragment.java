@@ -79,6 +79,7 @@ public class homeFragment extends Fragment {
     List<Integer> top3statecases=new ArrayList<>();
     ImageView indian;
     Boolean indianbutton=false;
+    TextView top3tview;
 
 
 
@@ -99,6 +100,8 @@ public class homeFragment extends Fragment {
 
         ViewGroup root=(ViewGroup)inflater.inflate(R.layout.fragment_home, container, false);
         indian=root.findViewById(R.id.ind);
+
+        top3tview=root.findViewById(R.id.top3);
         affectedGraphView=root.findViewById(R.id.affectedgraph);
         activegraphview=root.findViewById(R.id.activegraph);
         graphfcon=root.findViewById(R.id.graphfirstcountry);
@@ -122,11 +125,13 @@ public class homeFragment extends Fragment {
             public void onClick(View v) {
                 if(pref.getBoolean("india",false))
                 {   editor.putBoolean("india",false);
+                    editor.commit();
                     Log.d(TAG, "onClick: "+pref.getBoolean("india",false));
 
                 }
                 else if(!pref.getBoolean("india",false)){
                     editor.putBoolean("india",true);
+                    editor.commit();
 
                 }
                 FragmentTransaction ft = getFragmentManager().beginTransaction();
@@ -142,10 +147,13 @@ public class homeFragment extends Fragment {
         });
 
     if(!pref.getBoolean("india",false)) {
+        top3tview.setText("Top 3 Country");
+        indian.setImageResource(R.drawable.flagind);
         globalcases();
     }
     else if(pref.getBoolean("india",false))
-    {
+    {   top3tview.setText("Top 3 States");
+        indian.setImageResource(R.drawable.globe);
         indiancases();
     }
 
@@ -167,8 +175,11 @@ public class homeFragment extends Fragment {
                     @Override
                     public void onNext(india_Data india_data) {
                         DecimalFormat precision = new DecimalFormat("0.0");
-                        affected.setText(Float.toString(Float.parseFloat(precision.format(india_data.getStatewise().get(0).getConfirmed()))/1000)+"k");
-                        affected.setText(Float.toString(Float.parseFloat(precision.format(india_data.getStatewise().get(0).getActive()))/1000)+"k");
+                        affected.setText(Float.toString(Float.parseFloat(india_data.getStatewise().get(0).getConfirmed())/1000)+"k");
+                        active.setText(Float.toString(Float.parseFloat(india_data.getStatewise().get(0).getActive())/1000)+"k");
+                        percentageChartView.setProgress((Float.parseFloat(india_data.getStatewise().get(0).getActive())/Float.parseFloat(india_data.getStatewise().get(0).getConfirmed()))*100,true);
+                        makegraph(india_data);
+                        Log.d(TAG, "onNext: "+india_data.getStatewise().get(0).getActive());
                         Log.d("HIEE", "onNext: "+india_data.getCases_time_series().toString());
                         for(int days=1;days<india_data.getStatewise().size();days++)
                         {
@@ -195,6 +206,12 @@ public class homeFragment extends Fragment {
                         top3statecases.add(l.get(l.size()-1));
                         top3statecases.add(l.get(l.size()-2));
                         top3statecases.add(l.get(l.size()-3));
+                        fconame.setText(top3states.get(0));
+                        factive.setText(String.valueOf(top3statecases.get(0)));
+                        sconame.setText(top3states.get(1));
+                        sactive.setText(String.valueOf(top3statecases.get(1)));
+                        tconame.setText(top3states.get(2));
+                        tactive.setText(String.valueOf(top3statecases.get(2)));
 
                         Log.d(TAG, "onComplete: "+top3states.get(0));
                         Log.d(TAG, "onComplete: "+top3statecases.get(0));
@@ -205,6 +222,35 @@ public class homeFragment extends Fragment {
                     }
                 });
     }
+
+    private void makegraph(india_Data india_data) {
+        int size=india_data.getCases_time_series().size();
+        float casedata[] = new float[]{ Float.valueOf(india_data.getCases_time_series().get(size-1).getTotalconfirmed()),
+                Float.valueOf(india_data.getCases_time_series().get(size-2).getTotalconfirmed()),
+                Float.valueOf(india_data.getCases_time_series().get(size-3).getTotalconfirmed()),
+                Float.valueOf(india_data.getCases_time_series().get(size-4).getTotalconfirmed()),
+                Float.valueOf(india_data.getCases_time_series().get(size-5).getTotalconfirmed()),
+                Float.valueOf(india_data.getCases_time_series().get(size-6).getTotalconfirmed()),
+                Float.valueOf(india_data.getCases_time_series().get(size-7).getTotalconfirmed()),
+                Float.valueOf(india_data.getCases_time_series().get(size-8).getTotalconfirmed()),
+                Float.valueOf(india_data.getCases_time_series().get(size-9).getTotalconfirmed())
+                ,Float.valueOf(india_data.getCases_time_series().get(size-10).getTotalconfirmed())};
+        affectedGraphView.setData(null);// for example
+        affectedGraphView.setData(casedata);
+        float activecasep[]= new float[]{
+                Float.valueOf(india_data.getCases_time_series().get(size-1).getTotalconfirmed())-Float.valueOf(india_data.getCases_time_series().get(size-1).getTotaldeceased())-Float.valueOf(india_data.getCases_time_series().get(size-1).getTotalrecovered()),
+                Float.valueOf(india_data.getCases_time_series().get(size-2).getTotalconfirmed())-Float.valueOf(india_data.getCases_time_series().get(size-2).getTotaldeceased())-Float.valueOf(india_data.getCases_time_series().get(size-2).getTotalrecovered()),
+                Float.valueOf(india_data.getCases_time_series().get(size-3).getTotalconfirmed())-Float.valueOf(india_data.getCases_time_series().get(size-3).getTotaldeceased())-Float.valueOf(india_data.getCases_time_series().get(size-3).getTotalrecovered()),
+                Float.valueOf(india_data.getCases_time_series().get(size-4).getTotalconfirmed())-Float.valueOf(india_data.getCases_time_series().get(size-4).getTotaldeceased())-Float.valueOf(india_data.getCases_time_series().get(size-4).getTotalrecovered()),
+                Float.valueOf(india_data.getCases_time_series().get(size-5).getTotalconfirmed())-Float.valueOf(india_data.getCases_time_series().get(size-5).getTotaldeceased())-Float.valueOf(india_data.getCases_time_series().get(size-5).getTotalrecovered()),
+                Float.valueOf(india_data.getCases_time_series().get(size-6).getTotalconfirmed())-Float.valueOf(india_data.getCases_time_series().get(size-6).getTotaldeceased())-Float.valueOf(india_data.getCases_time_series().get(size-6).getTotalrecovered()),
+                Float.valueOf(india_data.getCases_time_series().get(size-7).getTotalconfirmed())-Float.valueOf(india_data.getCases_time_series().get(size-7).getTotaldeceased())-Float.valueOf(india_data.getCases_time_series().get(size-7).getTotalrecovered()),
+                Float.valueOf(india_data.getCases_time_series().get(size-8).getTotalconfirmed())-Float.valueOf(india_data.getCases_time_series().get(size-8).getTotaldeceased())-Float.valueOf(india_data.getCases_time_series().get(size-8).getTotalrecovered()),
+                Float.valueOf(india_data.getCases_time_series().get(size-9).getTotalconfirmed())-Float.valueOf(india_data.getCases_time_series().get(size-9).getTotaldeceased())-Float.valueOf(india_data.getCases_time_series().get(size-9).getTotalrecovered()),
+                Float.valueOf(india_data.getCases_time_series().get(size-10).getTotalconfirmed())-Float.valueOf(india_data.getCases_time_series().get(size-10).getTotaldeceased())-Float.valueOf(india_data.getCases_time_series().get(size-10).getTotalrecovered())};
+        activegraphview.setData(null);
+        activegraphview.setData(activecasep);
+        }
 
     private void globalcases() {
         utils apiinterface=RetrofitClient.getClient(getContext()).create(utils.class);
@@ -222,6 +268,7 @@ public class homeFragment extends Fragment {
                         DecimalFormat precision = new DecimalFormat("0.0");
                         affected.setText(Float.toString(Float.parseFloat(precision.format(allcases.getCases()/1000)))+"k");
                         active.setText(Float.toString(Float.parseFloat(precision.format(allcases.getActive()/1000)))+"k");
+
                         percentageChartView.setProgress((allcases.getActive()/allcases.getCases())*100,true);
 
                     }
@@ -319,11 +366,16 @@ public class homeFragment extends Fragment {
             affectedGraphView.setData(null);// for example
             affectedGraphView.setData(casedata);
             float activecasep[]=new float[]{
-                    Float.valueOf(casesdata.get(size-1))-Float.valueOf(deathdata.get(size-1))-Float.valueOf(recoverdata.get(size-1)),Float.valueOf(casesdata.get(size-2))-Float.valueOf(deathdata.get(size-2))-Float.valueOf(recoverdata.get(size-2)),
-                    Float.valueOf(casesdata.get(size-3))-Float.valueOf(deathdata.get(size-3))-Float.valueOf(recoverdata.get(size-3)),Float.valueOf(casesdata.get(size-4))-Float.valueOf(deathdata.get(size-4))-Float.valueOf(recoverdata.get(size-4)),
-                    Float.valueOf(casesdata.get(size-5))-Float.valueOf(recoverdata.get(size-5))-Float.valueOf(deathdata.get(size-5)),Float.valueOf(casesdata.get(size-6))-Float.valueOf(deathdata.get(size-6))-Float.valueOf(recoverdata.get(size-6)),
-                    Float.valueOf(casesdata.get(size-7))-Float.valueOf(deathdata.get(size-7))-Float.valueOf(recoverdata.get(size-7)),Float.valueOf(casesdata.get(size-8))-Float.valueOf(deathdata.get(size-8))-Float.valueOf(recoverdata.get(size-8)),
-                    Float.valueOf(casesdata.get(size-9))-Float.valueOf(deathdata.get(size-9))-Float.valueOf(recoverdata.get(size-9)),Float.valueOf(casesdata.get(size-10))-Float.valueOf(deathdata.get(size-10))-Float.valueOf(recoverdata.get(size-10))};
+                    Float.valueOf(casesdata.get(size-1))-Float.valueOf(deathdata.get(size-1))-Float.valueOf(recoverdata.get(size-1)),
+                    Float.valueOf(casesdata.get(size-2))-Float.valueOf(deathdata.get(size-2))-Float.valueOf(recoverdata.get(size-2)),
+                    Float.valueOf(casesdata.get(size-3))-Float.valueOf(deathdata.get(size-3))-Float.valueOf(recoverdata.get(size-3)),
+                    Float.valueOf(casesdata.get(size-4))-Float.valueOf(deathdata.get(size-4))-Float.valueOf(recoverdata.get(size-4)),
+                    Float.valueOf(casesdata.get(size-5))-Float.valueOf(recoverdata.get(size-5))-Float.valueOf(deathdata.get(size-5)),
+                    Float.valueOf(casesdata.get(size-6))-Float.valueOf(deathdata.get(size-6))-Float.valueOf(recoverdata.get(size-6)),
+                    Float.valueOf(casesdata.get(size-7))-Float.valueOf(deathdata.get(size-7))-Float.valueOf(recoverdata.get(size-7)),
+                    Float.valueOf(casesdata.get(size-8))-Float.valueOf(deathdata.get(size-8))-Float.valueOf(recoverdata.get(size-8)),
+                    Float.valueOf(casesdata.get(size-9))-Float.valueOf(deathdata.get(size-9))-Float.valueOf(recoverdata.get(size-9)),
+                    Float.valueOf(casesdata.get(size-10))-Float.valueOf(deathdata.get(size-10))-Float.valueOf(recoverdata.get(size-10))};
 
             activegraphview.setData(null);
             activegraphview.setData(activecasep);
